@@ -1,5 +1,14 @@
 #!/bin/bash
 
+set -e  
+
+failure(){
+    echo "Failed at $1: $2"
+}
+
+trap 'failure ${LINENO} "$BASH_COMMAND"' ERR 
+
+
 USERID=$(id -u)
 TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
@@ -20,7 +29,7 @@ VALIDATE(){
     fi
 }
 
-check_root () {
+check_root () {    # we gave a function check room and kept the check root in main file
  if [ $USERID -ne 0 ]
 then
     echo "Please run this script with root access."
